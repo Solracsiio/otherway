@@ -1,0 +1,2 @@
+# otherway
+a functional project
