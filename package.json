@@ -24,12 +24,12 @@
   "_spec": "cordova-android-toast",
   "_where": "C:\\Users\\cafigueroa\\Documents\\AppCordova\\hello",
   "author": {
-    "name": "Nikola Brežnjak",
-    "email": "nikola.breznjak@gmail.com",
-    "url": "http://www.nikola-breznjak.com/blog"
+    "name": "Carlos Figueroa",
+    "email": "solracsiio1@gmail.com",
+    "url": "https://github.com/Solracsiio/otherway"
   },
   "bugs": {
-    "url": "https://github.com/Hitman666/cordova-android-toast/issues"
+    "url": "https://github.com/Solracsiio/otherway/issues"
   },
   "bundleDependencies": false,
   "cordova": {
@@ -46,7 +46,7 @@
       "version": ">=3.0.0"
     }
   ],
-  "homepage": "https://github.com/Hitman666/cordova-android-toast#readme",
+  "homepage": "https://github.com/Solracsiio/otherway",
   "keywords": [
     "android",
     "toast",
@@ -57,7 +57,7 @@
   "name": "cordova-android-toast",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Hitman666/cordova-android-toast.git"
+    "url": "git+https://github.com/Solracsiio/otherway"
   },
   "version": "1.0.0"
 }

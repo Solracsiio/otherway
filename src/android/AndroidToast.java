@@ -2,8 +2,6 @@
 //https://stackoverflow.com/questions/54062673/cordova-plugin-use-aar
 //
 
-package com.nikolabreznjak;
-
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
 import org.json.JSONArray;
@@ -22,10 +20,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 
-//import org.apache.commons.io.FilenameUtils;
-//import org.apache.commons.io.IOUtils;
-// import com.zebra.sdk.graphics.internal.ZebraImageAndroid;
-// import com.zebra.sdk.graphics.internal.ZebraImageAndroid;
 import android.util.Log;
 
 import java.io.IOException;
@@ -34,10 +28,6 @@ import java.util.Set;
 import honeywell.connection.*;
 import honeywell.connection.ConnectionBase;
 import honeywell.connection.Connection_Bluetooth;
-
-// import com.zebra.sdk.comm.BluetoothConnection;
-// import com.zebra.sdk.comm.Connection;
-// import com.zebra.sdk.comm.ConnectionException;
 
 import honeywell.printer.DocumentDPL;
 import honeywell.printer.DocumentDPL.*;
@@ -59,6 +49,7 @@ import honeywell.printer.configuration.ez.*;
 import java.io.File;
 import honeywell.printer.configuration.expcl.*;
 import honeywell.printer.ParametersLP;
+
 public class AndroidToast extends CordovaPlugin {
     private CallbackContext callbackContext;
 
@@ -78,6 +69,11 @@ public class AndroidToast extends CordovaPlugin {
    
     DocumentEZ docEZ = new DocumentEZ("MF204"); //EZ mode. MF204 is the font name
     ParametersEZ paramEZ = new ParametersEZ();
+
+    DocumentLP docLP = new DocumentLP("!"); //LinePrint mode.“!” is the font name
+    ParametersLP paramLP = new ParametersLP();
+
+
     
 
     
@@ -121,8 +117,9 @@ public class AndroidToast extends CordovaPlugin {
             docExPCL_PP.clear();
             try {// Imprimir el texto especificado
 
-                medLa_DPL.setLabelLengthLimit(false);
-                medLa_DPL.setLabelWidth(576);
+                // medLa_DPL.setLabelLengthLimit(false);
+                // medLa_DPL.setLabelWidth(576);
+                medLa_DPL.setStopLocation(MediaLabel_DPL.StopLocationValue.NEXTLABEL);
                 // medLa_DPL.setContinuousLabelLength(100);
                 closeConnection(callbackContext);
                 callbackContext.success("Configuracion aplicada!");
@@ -152,7 +149,7 @@ public class AndroidToast extends CordovaPlugin {
             
             try {
                 conn=Connection_Bluetooth.createClient(MACAddress);
-        mensaje+="paso1 con";
+                mensaje+="paso1 con";
                 //closeConnection(callbackContext);
                 //callbackContext.success("Conexion Establecida");
                 conn.open();
@@ -181,23 +178,38 @@ public class AndroidToast extends CordovaPlugin {
     public void Imprimir(String text, String MACADDRESS, CallbackContext callbackContext) {
 
         if (coneccion(MACADDRESS, callbackContext)) {
-            docDPL.clear();// limpiar el cache de la impresora, muy importante realizar antes de cada impresion
-            // docEZ.clear();// limpiar el cache de la impresora
-            // docExPCL_PP.clear();
+           
+            docDPL.clear();
             // docExPCL_PP.clear();
             try {// Imprimir el texto especificado
-                String casa="Quiero imprimir lo que yo quiera\n we como la vez\n a ver k pasa, quiero ver si imprimer algo largo\n como esto ..";
-                // docExPCL_PP.writeText(casa, 10, 10);
-                // docEZ.writeText(casa, 0, 0, "00",paramDPL);
-                
-                // docEZ.writeText(casa,0,1);
-                // conn.write(docEZ.getDocumentData());
-                docDPL.writeTextScalable(text, "00", 10, 10);//
-                // docDPL.writeText(text, 0, 0, "00",paramDPL);
+                 // docLP.clear();// limpiar el cache de la impresora, muy importante realizar antes de cada impresion
+            // docEZ.clear();// limpiar el cache de la impresora
+            // docEZ.writeText(text,0,1);
+            // conn.write(docEZ.getDocumentData());
 
-                conn.write(docDPL.getDocumentData());//Imprime  la informacoin en cache de la impresora
+            // docExPCL_LP.clear();
+            // docExPCL_LP.writeText(text);
+            // conn.write(docExPCL_LP.getDocumentData());
+
+            // docExPCL_PP.clear();
+            // docExPCL_PP.writeText(text,0,0);
+            // conn.write(docExPCL_PP.getDocumentData());   
+                
+            // docDPL.clear();
+            // docDPL.writeText(text, 0, 0, "00",paramDPL);
+            // conn.write(docDPL.getDocumentData());  
+            
+            docLP.clear();
+            docLP.writeText(text);
+            conn.write(docLP.getDocumentData());  
+                // conn.write(docEZ.getDocumentData());
+                //
+                
+
+                // Imprime  la informacoin en cache de la impresora
+                
+                callbackContext.success("Impresion exitosa");
                 closeConnection(callbackContext);
-                callbackContext.success("Texto Imprimido "+text.toString());
 
             } catch (Exception e) {
 
@@ -210,43 +222,48 @@ public class AndroidToast extends CordovaPlugin {
 
     }
 
-    public void ImprimirImagen(JSONArray labels, String MACADDRESS, CallbackContext callbackContext) {
-        if (coneccion(MACADDRESS, callbackContext)) {
-            docExPCL_LP.clear();// limpiar el cache de la impresora
-            // Imprimir el texto especificado
-        
+
+    //For PR2/PR3 Intermec Printers works with docLP, for 
+    public void ImprimirImagen(JSONArray imagen, String MACADDRESS, CallbackContext callbackContext) {//imagen viene como un dato tipo JSONArray
+        if (coneccion("88:6B:0F:BD:C1:8F", callbackContext)) {
+
+        String mensaje="";
 try {
-    for (int i = labels.length() - 1; i >= 0; i--) {
-        String base64Image = labels.get(i).toString();
+    for (int i = imagen.length() - 1; i >= 0; i--) {//imprime en secuencia si envias varias imagenes
+        docLP.clear();// limpiar el cache de la impresora
+        //  docEZ.clear();
+        String base64Image = imagen.get(i).toString();
 
         byte[] data = base64Image.getBytes("UTF-8");
-        String base64 = Base64.encodeToString(data, Base64.DEFAULT);
+        String base64 = Base64.encodeToString(data, Base64.DEFAULT);//Decodificacion de base64 con utf--8
 
 
-        mensaje = "paso1 imp";
+        mensaje = "paso1 ";
         byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
-        mensaje += "paso 2 imp";
+        mensaje += "paso 2 ";
         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-        mensaje += "paso 3 imp";
-        //src/android/lib/DO_AndroidSDK_v2.5.0.aar
-        // docExdocEZPCL_LP.writeImage(decodedByte,576,255);
-        File file = new File("/src/android/lib/1.png");
-        mensaje += "paso 4 imp";
-        docExPCL_LP.writeImage("/src/main/assets/www/img/a.png",576);
-        mensaje += "paso 5 imp";
-        conn.write(docExPCL_LP.getDocumentData());
-        mensaje += "paso 6 imp";
-        //conn.close();
-        //mensaje += "paso 6 ";
+        mensaje += "paso 3 ";
+
+        // medLa_DPL.setStopLocation(MediaLabel_DPL.StopLocationValue.CUT);
+        docLP.writeImage(decodedByte,576);
+        mensaje += "paso 4 ";
+        
+        conn.write(docLP.getDocumentData());//se impriume la imagen almacenada
+     
+
+        // docLP.writeText("                                                                                                      \n\n");
+        // conn.write(docLP.getDocumentData());//se impriume la imagen almacenada
+        // conn.write(docDPL.getDocumentData());//se impriume la imagen almacenada
+        mensaje += "paso 5 ";
 
         closeConnection(callbackContext);
-         callbackContext.success(mensaje);
+         callbackContext.success("Impresion Exitosa de imagen");
     }
-    
+
 } catch (Exception e) {
-    callbackContext.error(mensaje+"mensaje "+e.getMessage());
+    callbackContext.error("mensaje "+e.getMessage());
 }
-        
+
 } else {
     callbackContext.error("No se pudo conectar, sorry, bai");
 }
