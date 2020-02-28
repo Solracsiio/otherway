@@ -62,11 +62,11 @@ We start the process of plugin building by creating the `plugin.xml` file:
     <platform name="android">
         <config-file target="config.xml" parent="/*">
             <feature name="AndroidToast">
-                <param name="android-package" value="com.solracsiio.AndroidToast" />
+                <param name="android-package" value="com.nikolabreznjak.AndroidToast" />
             </feature>
         </config-file>
 
-        <source-file src="src/android/AndroidToast.java" target-dir="src/com/solracsiio/android-toast" />
+        <source-file src="src/android/AndroidToast.java" target-dir="src/com/nikola-breznjak/android-toast" />
     </platform>
 </plugin>
 ```
@@ -111,7 +111,7 @@ We created the `AndroidToast` function, which in other programming languages wou
 The 'native' code is written in [Java](https://www.ibm.com/developerworks/java/tutorials/j-introtojava1/):
 
 ```
-package com.solracsiio;
+package com.nikolabreznjak;
 
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
@@ -177,7 +177,7 @@ If you're in the plugin folder, then the command is: `plugman createpackagejson 
         "name": "cordova",
         "version": ">=3.0.0"
     }],
-    "author": "Carlos Figueroa<solracsiio1@gmail.com> (https://github.com/Solracsiio/otherway",
+    "author": "Nikola Brežnjak<nikola.breznjak@gmail.com> (http://www.nikola-breznjak.com/blog)",
     "license": "Apache 2.0"
 }
 ```
@@ -185,7 +185,7 @@ If you're in the plugin folder, then the command is: `plugman createpackagejson 
 ## Running the demo locally
 Clone this repo:
 
-`git clone https://github.com/Solracsiio/otherway`
+`git clone https://github.com/Hitman666/cordova-android-toast.git`
 
 CD into the cloned project
 

@@ -3,7 +3,7 @@
     <name>AndroidToast</name>
 
     <description>Android Toast Plugin</description>
-    <repo>https://github.com/Solracsiio/otherway</repo>
+    <repo>https://github.com/srehanuddin/Cordova-Plugin-Bluetooth-Printer</repo>
     <license>Apache 2.0</license>
     <keywords>android, toast</keywords>
 
@@ -18,11 +18,11 @@
     <platform name="android">
         <config-file target="config.xml" parent="/*">
             <feature name="AndroidToast">
-                <param name="android-package" value="com.solracsiio.AndroidToast" />
+                <param name="android-package" value="com.nikolabreznjak.AndroidToast" />
             </feature>
         </config-file>
 
-        <source-file src="src/android/AndroidToast.java" target-dir="src/com/solracsiio/android-toast" />
+        <source-file src="src/android/AndroidToast.java" target-dir="src/com/nikola-breznjak/android-toast" />
         <source-file src="src/android/lib/DO_AndroidSDK_v2.5.0.aar" target-dir="libs"/>
         <framework src="DO_AndroidSDK_v2.gradle" custom="true" type="gradleReference" />
          <!-- <source-file src="src/android/ZSDK_ANDROID_API.jar" target-dir="libs"/> -->

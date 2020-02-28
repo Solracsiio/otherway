@@ -10,8 +10,17 @@ module.exports = {
     coneccion: function(MACAddress,onSuccess,onError){
         exec(onSuccess,onError,'AndroidToast','coneccion',[MACAddress])
     },
+    analizador: function(texto,MACAddress,onSuccess,onError){
+        exec(onSuccess,onError,'AndroidToast','analizador',[texto,MACAddress])
+    },
+    ImprimirEspacios: function(MACAddress,onSuccess,onError){
+        exec(onSuccess,onError,'AndroidToast','ImprimirEspacios',[MACAddress])
+    },
     closeConnection: function(onSuccess,onError){
         exec(onSuccess,onError,'AndroidToast','closeConnection',[])
+    },
+    activo: function(onSuccess,onError){
+        exec(onSuccess,onError,'AndroidToast','activo',[])
     },
     obtenInfoPrinter: function(MACAddress,onSuccess,onError){
         exec(onSuccess,onError,'AndroidToast','obtenInfoPrinter',[MACAddress])
