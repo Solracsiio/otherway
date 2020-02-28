@@ -95,7 +95,7 @@ public class AndroidToast extends CordovaPlugin {
             ImprimirEspacios(args.getString(0), callbackContext);
             return true;
         } else if ("Imprimir".equals(action)) {
-            Imprimir(args.getString(0), args.getString(1), callbackContext);
+            analizador(args.getString(0), args.getString(1), callbackContext);
             return true;
         } else if ("analizador".equals(action)) {
             analizador(args.getString(0), args.getString(1), callbackContext);
