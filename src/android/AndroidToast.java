@@ -209,11 +209,12 @@ public class AndroidToast extends CordovaPlugin {
         callbackContext.success("Se imprimio");
     }
 
+   
     public void activo(CallbackContext callbackContext) {
         if (conn.getIsActive()) {
-            callbackContext.success("true");
+            callbackContext.success("Impresora Conectada");
         } else {
-            callbackContext.error("false");
+            callbackContext.error("Impresora desconectada");
         }
 
     }
