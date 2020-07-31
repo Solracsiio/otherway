@@ -92,7 +92,7 @@ public class AndroidToast extends CordovaPlugin {
             coneccion(args.getString(0), callbackContext);
             return true;
         } else if ("ImprimirEspacios".equals(action)) {
-            ImprimirEspacios(args.getString(0), callbackContext);
+            ImprimirEspacios(args.getString(0),args.getString(1), callbackContext);
             return true;
         } else if ("Imprimir".equals(action)) {
             analizador(args.getString(0), args.getString(1), callbackContext);
@@ -176,15 +176,16 @@ public class AndroidToast extends CordovaPlugin {
         return res;
     }
 
-    public void ImprimirEspacios(String MACADDRESS, CallbackContext callbackContext) {
-
+    public void ImprimirEspacios(String MACADDRESS,String nSaltos, CallbackContext callbackContext) {
+        int nsal = Integer.parseInt(nSaltos);
         docEZ.clear();
         try {
             paramEZ.setIsBold(true);
-            docEZ.writeText("    ", 0, 1);
-            // docEZ.writeText("    ", 0, 1, paramEZ); // For Intermec PR3/PR2 DOcumentEZ is the best way to print text without garbage
-
-            conn.write(docEZ.getDocumentData());//Imprime  la informacoin en cache de la impresora
+            docEZ.writeText("    ", 0, 1, paramEZ); // For Intermec PR3/PR2 DOcumentEZ is the best way to print text without garbage
+            for (int i = 0; i < nsal; i++) {
+                conn.write(docEZ.getDocumentData());//Imprime  la informacoin en cache de la impresora
+            }
+            
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -197,7 +198,7 @@ public class AndroidToast extends CordovaPlugin {
         String t = "";
         for (int i = 0; i < text.length(); i++) {
             char c = text.charAt(i);
-            if (i % 27 == 0 && i != 0) {
+            if (i % 56 == 0 && i != 0) {
                 t += c + "    ";
                 ImprimirLinea(t, MACADDRESS, callbackContext);
                 t = "";
@@ -223,15 +224,11 @@ public class AndroidToast extends CordovaPlugin {
     public void ImprimirLinea(String text, String MACADDRESS, CallbackContext callbackContext) {
         docEZ.clear();// limpiar el cache de la impresora, muy importante realizar antes de cada impresion
         try {// Imprimir el texto especificado
-            //paramEZ.setIsBold(true);
-            docEZ.writeText("<--EZ\n" +
-            "{PRINT:\n" +
-            "@0,30:PE203,HMULT2,VMULT2|"+text+"|\n" + // Y, X , Font size, ? , ?, Text, JMP
-            // "@60,30:PE203,HMULT2,VMULT2|01-01-05|\n" +
-            "}", 0, 1, paramEZ); // For Intermec PR3/PR2 DOcumentEZ is the best way to print text without garbage
+            paramEZ.setIsBold(true);
+            docEZ.writeText(text, 0, 1, paramEZ); // For Intermec PR3/PR2 DOcumentEZ is the best way to print text without garbage
             conn.write(docEZ.getDocumentData());//Imprime  la informacoin en cache de la impresora
             // closeConnection(callbackContext);
-            // ImprimirEspacios(MACADDRESS, callbackContext);
+            ImprimirEspacios(MACADDRESS, callbackContext);
             callbackContext.success("Texto Imprimido " + text.toString());
         } catch (Exception e) {
             e.printStackTrace();
@@ -245,14 +242,10 @@ public class AndroidToast extends CordovaPlugin {
         docEZ.clear();// limpiar el cache de la impresora, muy importante realizar antes de cada impresion
 
         try {// Imprimir el texto especificado
-            // paramEZ.setHorizontalMultiplier(3);
-            // paramEZ.setVerticalMultiplier(3);
-            //paramEZ.setFont("HoneywellSans-Medium");
-            docEZ.writeText("<--EZ\n" +
-            "{PRINT:\n" +
-            "@0,30:PE203,HMULT2,VMULT2|"+text+"|\n" + // Y, X , Font size, ? , ?, Text, JMP
-            // "@60,30:PE203,HMULT2,VMULT2|01-01-05|\n" +
-            "}", 0, 1, paramEZ); // For Intermec PR3/PR2 DOcumentEZ is the best way to print text without garbage
+
+            paramEZ.setIsBold(true);
+
+            docEZ.writeText(text, 0, 1, paramEZ); // For Intermec PR3/PR2 DOcumentEZ is the best way to print text without garbage
 
             conn.write(docEZ.getDocumentData());//Imprime  la informacoin en cache de la impresora
             // closeConnection(callbackContext);

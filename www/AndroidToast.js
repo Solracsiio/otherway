@@ -13,8 +13,8 @@ module.exports = {
     analizador: function(texto,MACAddress,onSuccess,onError){
         exec(onSuccess,onError,'AndroidToast','analizador',[texto,MACAddress])
     },
-    ImprimirEspacios: function(MACAddress,onSuccess,onError){
-        exec(onSuccess,onError,'AndroidToast','ImprimirEspacios',[MACAddress])
+    ImprimirEspacios: function(MACAddress,nSaltos,onSuccess,onError){
+        exec(onSuccess,onError,'AndroidToast','ImprimirEspacios',[MACAddress,nSaltos])
     },
     closeConnection: function(onSuccess,onError){
         exec(onSuccess,onError,'AndroidToast','closeConnection',[])
